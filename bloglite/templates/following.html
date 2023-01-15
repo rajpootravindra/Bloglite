@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Followings{% endblock %}
+{% block content %}
+<div class="content-section">
+    <h1>Following:</h1>
+    <hr>
+    {% for user in users %}
+        <div class="my-3 row">
+            <div class="col-md-10">
+                <h3>{{ user.username }}</h3>
+            </div>
+            <div class="col-md-2">
+              {% if user.username == user.username %}
+              <a href="/unfollow/{{user.username}}"><button type="button" class="btn btn-info">UnFollow</button></a>
+              {% else %}
+              <a href="/follow/{{user.username}}"><button type="button" class="btn btn-info">Follow</button></a>
+              {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}

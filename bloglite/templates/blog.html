@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{%block title %}{{ blog.title }}{% endblock %}
+{%block content %}
+<article class="media content-section">
+    <img class="rounded-circle article-img"
+      src="{{ url_for('static', filename='profile_images/' + blog.author.profile_image) }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ blog.author.name }}</a>
+        <small class="text-muted">{{ blog.date_posted.strftime('%Y-%m-%d') }}</small>
+  
+  
+  
+        <!-- check if the post belongs to the logged in user. then we will show this update and delete link to the user.  -->
+        {% if blog.author == current_user %}
+        <div>
+          <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_blog', blog_id=blog.id) }}">Update</a>
+          <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal"
+            data-bs-target="#deleteModal">Delete</button>
+        </div>
+        {% endif %}
+        <!-- we will end the if condition here. -->
+      </div>
+
+      <div class="rounded border border-success p-2 mb-2">
+        <h2 class="article-title">{{ blog.title }}</h2>
+        <img src="{{ url_for('static' , filename = 'blog_images/' + blog.blog_image) }}" alt="" class="blog_image">
+        <p class="article-content">{{ blog.caption }}</p>
+        <div id="like-count-{{ blog.id }}">{{blog.likes |length }} 
+        </div>
+        <div class="like text-right">{% if blog.liked %}
+          <i onclick="myFunction(this,{{ blog.id }})" class=" me-5  fas fa-thumbs-up fa-2x text-right"></i>
+          {% else %}
+          <i onclick="myFunction(this,{{ blog.id }})" class=" me-5  far fa-thumbs-up fa-2x"></i>
+          {% endif %}</div>
+        
+      </div>
+    </div>
+  </article>
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="deleteModalLabel">Are you sure, you want to delete the post?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <!-- this is the form to delete the post using the id of the post. -->
+          <form action="{{ url_for('delete_blog', blog_id=blog.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock%}

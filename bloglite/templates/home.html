@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %} home {% endblock %}
+{% block content %}
+{% if current_user.followed %}
+<h2 class="border-bottom pt3 ">My Feed:</h2>
+    {% for blog in blogs %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_images/' + blog.author.profile_image) }}">
+          <h6><a class="mr-2 text-light" href="profile/{{blog.author.username}}">{{ blog.author.name }}</a></h6>
+          <div class="media-body border border border-2 rounded-5 mx-5 ps-3 pt-3">
+            <div class="article-metadata">
+              <h2><a class="article-title text-light" href="{{ url_for('blog', blog_id=blog.id) }}">{{ blog.title }}</a></h2>
+              <small class="text-muted">{{ blog.date_posted.strftime('%Y-%m-%d') }}</small>
+              <p class="article-content">{{ blog.caption }}</p>
+            </div>
+            <img class="blog_image" src="{{ url_for('static', filename='blog_images/' + blog.blog_image) }}">
+            <div id="like-count-{{ blog.id }}">{{blog.likes |length }}
+            </div>
+            <p>likes</p>
+           <div class="like text-center"> {% if blog.liked %}
+            <i onclick="myFunction(this,{{ blog.id }})" class=" me-5  fas fa-thumbs-up fa-2x text-right"></i>
+            {% else %}
+            <i onclick="myFunction(this,{{ blog.id }})" class=" me-5  far fa-thumbs-up fa-2x"></i>
+            {% endif %}</div>
+          </div>
+        </article>
+    {% endfor %}
+
+
+{% else %}
+<h2 class="border-bottom pt3 ">My Feed:</h2>
+<div class="feed text-center">
+    
+  <h4><p>There are no posts in your feed.</p><p>try connecting other user to see what they are posting </p></h4>
+</div>
+{% endif %}
+{% endblock %}

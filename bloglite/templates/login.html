@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %} login {% endblock %}
+{% block content %}
+<div class="form-box border border-2 rounded-5 shadow-lg p-3 bg-body-tertiary">
+    <legend class="text-center md-5">Login</legend>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {#<!-- Username input  section -->#}
+    {{ form.username.label(class="my-2")}}
+    {% if form.username.errors %}
+    {{ form.username(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+        {% for error in form.username.errors %}
+        <Span>{{ error }}</Span>
+        {% endfor %}
+    </div>
+    {% else %}
+    {{ form.username(class="form-control form-control-lg")}}
+    {% endif %}
+
+    {#<!-- Password input  section --> #}
+    {{ form.password.label(class="my-2")}}
+    {% if form.password.errors %}
+    {{ form.password(class="form-control form-control-lg is-invalid") }}
+    <div class="invalid-feedback">
+        {% for error in form.password.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    {{ form.password(class="form-control form-control-lg") }}
+    {% endif %}
+    <!-- form check box  section -->
+    {{ form.remember_me(class="form-check-input")}}
+    {{ form.remember_me.label(class="form-check-label") }}
+
+    <!-- form submit button -->
+    <div class="form-group text-center">
+    {{ form.submit(class="btn btn-outline-success") }}
+    </div>
+    <small class="ml-2">
+        <a href="#">Forgot Password?</a>
+    </small>
+
+</form>
+</div>
+<div class="login-register-box border-top pt-3 text-center">
+    <small class="">
+        Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
+    </small>
+</div>
+
+{% endblock %}

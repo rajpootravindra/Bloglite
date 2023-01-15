@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<div class="form-box border border-2 rounded-5 shadow-lg p-3 bg-body-tertiary">
+    <legend class="text-center md-5">{{legend}}</legend>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <!-- Username Input Section -->
+        {{ form.title.label }}
+        {% if form.title.errors %}
+        {{ form.title(class="form-control form-control-lg is-invalid")}}
+        <div class="invalid-feedback">
+            {% for error in form.title.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        {{ form.title(class="form-control form-control-lg") }}
+        {% endif %}
+        <!-- Name Input Section -->
+        {{ form.caption.label }}
+        {% if form.caption.errors %}
+        {{ form.caption(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+            {% for error in form.caption.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+        </div>
+        {% else %}
+        {{ form.caption(class="form-control form-control-lg") }}
+        {% endif %}
+        <!-- Image file Input Section -->
+
+        {{ form.blog_image.label() }}
+        {{ form.blog_image(class="form-control-file") }}
+
+        {% if form.blog_image.errors %}
+        {% for error in form.blog_image.errors %}
+            <span class="text-danger">{{ error }}</span>  <br/>
+        {% endfor %}
+        {% endif %}
+        <!-- form submit button -->
+        <div class="form-group text-center">
+        {{ form.submit(class="btn btn-outline-success") }}
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

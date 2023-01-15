@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} search {% endblock %}
+{% block content %}
+<div class="content-section">
+    <h3>Search results:</h3>
+    <hr>
+    {% for user in users %}
+        <div class="my-3 row">
+            <div class="col-md-10">
+               <a href="profile/{{user.username}}"> <h3>{{ user.username }}</h3></a>
+            </div>
+            <div class="col-md-2">
+              {% if user in current_user.followed %}
+              <a href="/unfollow/{{user.username}}"><button type="button" class="btn btn-info UFL">UnFollow</button></a>
+              {% else %}
+              <a href="/follow/{{user.username}}"><button type="button" class="btn btn-info UFL">Follow</button></a>
+              {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

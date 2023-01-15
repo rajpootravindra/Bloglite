@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Font awesome ccs link -->
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
+    <!-- Bootstrap CSS Link-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <!-- Custom CSS Link-->
+    <link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='styles.css') }}">
+    <script>
+        var value;
+        var buttons = document.getElementsByClassName('UFL');
+
+        for (var i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = refresh;
+        }
+
+        function refresh() {
+            window.location.reload();
+        }
+        function myFunction(x, id) {
+          count = document.querySelector("#like-count-" + id)
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              count.innerText = xhttp.response +" likes"
+              x.classList.toggle("fa=solid");
+            }
+          };
+          xhttp.open("GET", "/like/" + id, true);
+          xhttp.send()
+        };
+      </script>
+
+</head>
+
+<body>
+    <div class="header-section">
+        <nav class="navbar navbar-expand-lg text-white">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="{{ url_for('home')}}"> <h1>BlogLite</h1></a>
+                {% if current_user.is_authenticated %}
+                <a class="wcl nav-link" aria-current="page" href="{{ url_for('profile',username=current_user.username)}}">Welcome {{current_user.name}}</a>
+                {% endif %}
+                <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- right-side nav -->
+                <div class="right-nav collapse navbar-collapse " id="navbarText">
+                    {% if current_user.is_authenticated %}
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <form action="{{url_for('search')}}" method="POST" class="d-flex mr-5" role="search">
+                            <input class="form-control form-control-lg me-3" name="search" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" type="submit">Search</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mr-5 text-white fs-6" href="{{ url_for('create_blog')}}">Create blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fs-6" href="{{url_for('profile',username=current_user.username)}}"> My Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fs-6" href="{{ url_for('logout')}}"> Logout</a>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fs-6" href="{{ url_for('register')}}">Sign In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fs-6" href="{{ url_for('register')}}">Sign Up</a>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="body-section border border-2 rounded-5 shadow-lg p-3 bg-body-tertiary">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="alert alert-danger alter-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success alter-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="container">{% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="footer-section">
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
